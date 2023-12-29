@@ -1,0 +1,11 @@
+name: AlwaysHalfHeart
+description: Prevent people from dying. Only allow always half heart.
+version: 1.0 # the plugin's version
+author: Kenny Kantisiri
+main: com.kantisiri.AlwaysHalfHeart
+api-version: '1.20'
+commands:
+  halfheart:
+    description: 'Half Heart'
+    permission: 'halfheart.admin'
+    usage: '/halfheart'

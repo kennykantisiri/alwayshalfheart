@@ -1,0 +1,34 @@
+# https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+allowed-kills:
+  - BLOCK_EXPLOSION
+  - CONTACT
+  - CRAMMING
+  - CUSTOM
+  - DRAGON_BREATH
+  - DROWNING
+  - DRYOUT
+  - ENTITY_ATTACK
+  - ENTITY_EXPLOSION
+  - ENTITY_SWEEP_ATTACK
+  - FALL
+  - FALLING_BLOCK
+  - FIRE
+  - FIRE_TICK
+  - FLY_INTO_WALL
+  - FREEZE
+  - HOT_FLOOR
+  - KILL
+  - LAVA
+  - LIGHTNING
+  - MAGIC
+  - MELTING
+  - POISON
+  - PROJECTILE
+  - SONIC_BOOM
+  - STARVATION
+  - SUFFOCATION
+  - SUICIDE
+  - THORNS
+  - VOID
+  - WITHER
+  - WORLD_BORDER
