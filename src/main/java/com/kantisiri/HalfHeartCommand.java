@@ -2,23 +2,22 @@ package com.kantisiri;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 public class HalfHeartCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Server server = Bukkit.getServer();
-
-        if (!sender.hasPermission("halfheart.admin")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
-            return true;
-        }
+        AlwaysHalfHeart plugin = AlwaysHalfHeart.getPlugin();
+        FileConfiguration dataConfig = plugin.getDataFileConfig();
+        List<String> players = dataConfig.getStringList("players");
 
         if (args.length < 1) {
             sender.sendMessage(ChatColor.RED + "/halfheart add <player>");
@@ -39,19 +38,33 @@ public class HalfHeartCommand implements CommandExecutor {
                 playerUUIDFuture.thenAccept(uuid -> {
                     if (uuid != null) {
                         if (args[0].equalsIgnoreCase("add")) {
-                            sender.sendMessage(ChatColor.GREEN + "Added player " + uuid);
+                            if (players.contains(uuid)) {
+                                Bukkit.getLogger().log(Level.INFO, players.toString());
+                                sender.sendMessage(ChatColor.RED + "Player (" + uuid + ") already exists in database.");
+                            } else {
+                                players.add(uuid);
+                                Bukkit.getLogger().log(Level.INFO, "players: " + players.toString());
+                                sender.sendMessage(ChatColor.GREEN + "Added player " + uuid);
+                            }
                         } else if (args[0].equalsIgnoreCase("remove")) {
-                            sender.sendMessage(ChatColor.GREEN + "Removed player " + uuid);
+                            if (players.contains(uuid)) {
+                                players.remove(uuid);
+                                sender.sendMessage(ChatColor.GREEN + "Removed player " + uuid);
+                            } else {
+                                sender.sendMessage(ChatColor.RED + "Player (" + uuid + ") does not exist in database.");
+                            }
                         }
                     } else {
                         sender.sendMessage(ChatColor.RED + "Player not found within Minecraft. Are you sure it's the right name?");
                     }
+
+                    dataConfig.set("players", players);
                 });
 
                 return true;
             }
             case "players":
-                sender.sendMessage(ChatColor.RED + "List of players:");
+                sender.sendMessage(ChatColor.RED + "List of players: " + players);
                 return true;
             default:
                 sender.sendMessage(ChatColor.RED + "/halfheart add <player>");

@@ -8,12 +8,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MojangAPIHelper {
 
-    private static final ExecutorService executor = Executors.newCachedThreadPool();
     public static CompletableFuture<String> getPlayerUUID(String name) {
         return CompletableFuture.supplyAsync(() -> {
             StringBuilder result = new StringBuilder();
@@ -25,11 +22,12 @@ public class MojangAPIHelper {
                     result.append(line);
                 }
             } catch (Exception e) {
+                // When the username doesn't exist, throws Exception -> return null.
                 return null;
             }
             JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.toString());
             return jsonObject.get("id").toString().replace("\"", "");
-        }, executor);
+        });
     }
 
 }
