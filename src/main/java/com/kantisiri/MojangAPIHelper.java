@@ -1,10 +1,10 @@
 package com.kantisiri;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,8 +16,7 @@ import java.util.logging.Level;
 
 public class MojangAPIHelper {
 
-    public static CompletableFuture<
-            Pair<String, String>> getPlayerInfo(String name) {
+    public static CompletableFuture<Pair<String, String>> getPlayerInfo(String name) {
         return CompletableFuture.supplyAsync(() -> {
             StringBuilder result = new StringBuilder();
             try {
@@ -31,7 +30,14 @@ public class MojangAPIHelper {
                 // When the username doesn't exist, throws Exception -> return null.
                 return new Pair<>(null, null);
             }
-            JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.toString());
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = (JSONObject) jsonParser.parse(result.toString());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
             return new Pair<>(jsonObject.get("name").toString(),
                     jsonObject.get("id").toString().replace("\"", ""));
         });
@@ -54,17 +60,19 @@ public class MojangAPIHelper {
                     Bukkit.getLogger().log(Level.SEVERE, "Could not find UUID " + uuid + " with Mojang API!");
                 }
 
-                JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.toString());
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = (JSONObject) jsonParser.parse(result.toString());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
                 names.add(jsonObject.get("name").toString().replace("\"", ""));
             }
 
             return names;
         });
-    }
-
-    @Nullable
-    public record Pair<K, V>(K key, V value) {
-        // intentionally empty
     }
 
 }

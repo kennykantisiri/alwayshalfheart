@@ -46,10 +46,10 @@ public class HalfHeartCommand implements CommandExecutor {
                     return true;
                 }
 
-                CompletableFuture<MojangAPIHelper.Pair<String, String>> playerUUIDFuture = MojangAPIHelper.getPlayerInfo(args[1]);
+                CompletableFuture<Pair<String, String>> playerUUIDFuture = MojangAPIHelper.getPlayerInfo(args[1]);
                 playerUUIDFuture.thenAccept(record -> {
-                    String name = record.key();
-                    String uuid = record.value();
+                    String name = record.getKey();
+                    String uuid = record.getValue();
                     if (uuid != null) {
                         if (args[0].equalsIgnoreCase("add")) {
                             if (players.contains(uuid)) {
