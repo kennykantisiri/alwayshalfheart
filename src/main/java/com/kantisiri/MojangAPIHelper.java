@@ -2,7 +2,9 @@ package com.kantisiri;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.bukkit.Bukkit;
 
+import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -10,10 +12,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 public class MojangAPIHelper {
 
-    public static CompletableFuture<Pair<String, String>> getPlayerInfo(String name) {
+    public static CompletableFuture<
+            Pair<String, String>> getPlayerInfo(String name) {
         return CompletableFuture.supplyAsync(() -> {
             StringBuilder result = new StringBuilder();
             try {
@@ -25,7 +29,7 @@ public class MojangAPIHelper {
                 }
             } catch (Exception e) {
                 // When the username doesn't exist, throws Exception -> return null.
-                return null;
+                return new Pair<>(null, null);
             }
             JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.toString());
             return new Pair<>(jsonObject.get("name").toString(),
@@ -47,16 +51,18 @@ public class MojangAPIHelper {
                     }
                 } catch (Exception e) {
                     // When the UUID doesn't exist, throws Exception -> return null.
-                    return null;
+                    Bukkit.getLogger().log(Level.SEVERE, "Could not find UUID " + uuid + " with Mojang API!");
                 }
 
                 JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.toString());
-                names.add(jsonObject.get("name").toString());
+                names.add(jsonObject.get("name").toString().replace("\"", ""));
             }
 
             return names;
         });
     }
+
+    @Nullable
     public record Pair<K, V>(K key, V value) {
         // intentionally empty
     }

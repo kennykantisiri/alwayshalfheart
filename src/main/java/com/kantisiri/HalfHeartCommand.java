@@ -1,5 +1,6 @@
 package com.kantisiri;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 public class HalfHeartCommand implements CommandExecutor {
 
@@ -22,6 +24,11 @@ public class HalfHeartCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         FileConfiguration dataConfig = plugin.getDataFileConfig();
         List<String> players = dataConfig.getStringList("players");
+
+        if (!sender.hasPermission("halfheart.admin")) {
+            sender.sendMessage(ChatColor.RED + "You do not have permission to run this command!");
+            return true;
+        }
 
         if (args.length < 1) {
             sender.sendMessage(ChatColor.RED + "/halfheart add <player>");

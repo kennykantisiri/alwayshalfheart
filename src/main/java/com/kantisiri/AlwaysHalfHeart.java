@@ -41,6 +41,7 @@ public class AlwaysHalfHeart extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new DamageListener(), this);
         this.getCommand("halfheart").setExecutor(new HalfHeartCommand());
+        this.getCommand("halfheart").setTabCompleter(new HalfHeartTabComplete());
 
         sendDebugMessage("Registered Events and Command");
         debug = false;
