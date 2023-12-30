@@ -1,3 +1,4 @@
+# Default List is Based On 1.20 Version
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
 allowed-kills:
   - BLOCK_EXPLOSION
