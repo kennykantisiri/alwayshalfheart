@@ -2,8 +2,6 @@ package com.kantisiri;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.bukkit.Bukkit;
-import org.graalvm.collections.Pair;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,7 +10,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public class MojangAPIHelper {
 

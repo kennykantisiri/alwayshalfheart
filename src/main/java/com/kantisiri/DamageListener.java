@@ -1,15 +1,11 @@
 package com.kantisiri;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class DamageListener implements Listener {
 
